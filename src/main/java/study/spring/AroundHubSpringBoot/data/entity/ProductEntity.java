@@ -19,6 +19,7 @@ import study.spring.AroundHubSpringBoot.data.dto.ProductDto;
 @Builder
 @Table(name = "product")
 public class ProductEntity {
+// DB의 table과 직접적으로 매핑되는 클래스
 
   @Id
   String productId;
