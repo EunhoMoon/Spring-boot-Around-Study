@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import study.spring.AroundHubSpringBoot.common.Constants.ExceptionClass;
+import study.spring.AroundHubSpringBoot.common.exception.AroundException;
 import study.spring.AroundHubSpringBoot.data.dto.ProductDto;
 import study.spring.AroundHubSpringBoot.service.ProductService;
 
@@ -60,4 +62,10 @@ public class ProductController {
 	public ProductDto deleteProduct(@PathVariable String productId) {
 	  return null;
 	}
+	
+	@PostMapping("/product/exception")
+	public void exceptionTest() throws AroundException {
+		throw new AroundException(ExceptionClass.PRODUCT, HttpStatus.FORBIDDEN, "접근이 금지되었습니다.");
+	}
+	
 }
