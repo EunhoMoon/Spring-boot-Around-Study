@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,10 +23,10 @@ public class ShortUrlController {
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(ShortUrlController.class);
 	
-	@Value("${around.hub.short.url.id}")
+	@Value("UfSPZWCjoXMOQ7HdLpKf")
 	private String CLIENT_ID;
 	
-	@Value("${around.hub.short.url.secret}")
+	@Value("kLlb5kv4HB")
 	private String CLIENT_SECRET;
 	
 	ShortUrlService shortUrlService;
@@ -40,13 +42,15 @@ public class ShortUrlController {
 		LOGGER.info("[generateShortUrl] perform API. CLIENT_ID : {}, CLIENT_SECRET : {}", CLIENT_ID, CLIENT_SECRET);
 		
 		return shortUrlService.generateShortUrl(CLIENT_ID, CLIENT_SECRET, originalUrl);	
+		
 	}
 	
 	@GetMapping()
 	public ShortUrlResponseDto getShortUrl(String originalUrl) {
-		ShortUrlResponseDto shortUrlResponseDto = new ShortUrlResponseDto("ss", "ss");
+//		ShortUrlResponseDto shortUrlResponseDto = new ShortUrlResponseDto("ss", "ss");
 		
 		return shortUrlService.getShortUrl(CLIENT_ID, CLIENT_SECRET, originalUrl);
+		
 	}
 	
 	@PutMapping("/")
@@ -55,8 +59,14 @@ public class ShortUrlController {
 	}
 	
 	@DeleteMapping("/")
-	public ShortUrlResponseDto deleteShortUrl(String url) {
-		return null;
+	public ResponseEntity<String> deleteShortUrl(String url) {
+		try {
+			shortUrlService.deleteShortUrl(url);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body("정상적으로 삭제되었습니다.");
 	}
 	
 }
